@@ -18,7 +18,7 @@ pyyaml = "^6.0"
 sqlalchemy = { version = "^2.0", optional = true }
 openpyxl = { version = "^3.1.0", optional = true }
 pytest = { version = "^7.4.0", optional = true }
-mypy = { version = "^1.5.0", optional = true }
+numpy = { version = "<2", optional = true }
 ruff = { version = "^0.1.0", optional = true }
 pandas = { version = "^2.1.0", optional = true }
 pre-commit = { version = "^3.0", optional = true }
@@ -27,7 +27,7 @@ pre-commit = { version = "^3.0", optional = true }
 sql = ["sqlalchemy"]
 excel = ["openpyxl"]
 all = ["sqlalchemy", "openpyxl"]
-dev = ["pytest", "mypy", "ruff", "pandas", "pre-commit"]
+dev = ["pytest", "mypy", "ruff", "pandas", "pre-commit", "numpy"]
 
 [build-system]
 requires = ["poetry-core"]
