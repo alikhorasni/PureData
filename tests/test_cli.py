@@ -1,6 +1,7 @@
 from click.testing import CliRunner
 
-from pure_data.cli import main
+from turboclean.cli import main
+
 
 def test_clean_auto_magic(tmp_path):
     csv = tmp_path / "dirty.csv"
