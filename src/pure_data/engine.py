@@ -86,10 +86,10 @@ class DataPurityEngine:
         df = self._lf.collect() if self._lf is not None else pl.DataFrame()
         dest = Path(destination)
         if format == FileFormat.PARQUET:
-            df.to_parquet(dest)      
+            df.write_parquet(dest)
         elif format == FileFormat.CSV:
-            df.to_csv(dest)          
+            df.write_csv(dest)
         elif format == FileFormat.JSON:
-            df.to_ndjson(dest)       
+            df.write_ndjson(dest)
         else:
             raise ValueError(f"Unsupported output format: {format}")
