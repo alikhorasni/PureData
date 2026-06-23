@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 import polars as pl
 import pyarrow as pa
@@ -98,7 +98,7 @@ class DataPurityEngine:
             raise RuntimeError("No data loaded. Call load() first.")
         return self._lf.collect()
 
-    def write(self, destination: str | Path, format: Optional[FileFormat] = None) -> None:
+    def write(self, destination: str | Path, format: FileFormat | None = None) -> None:
         df = self._lf.collect() if self._lf is not None else pl.DataFrame()
         dest = Path(destination).resolve()
         dest.parent.mkdir(parents=True, exist_ok=True)
