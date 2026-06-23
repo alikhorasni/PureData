@@ -11,7 +11,8 @@ def test_load_and_clean(large_dirty_df, engine):
 
 def test_suggest_rules(engine, large_dirty_df):
     engine._lf = large_dirty_df.lazy()
-    rules = engine.suggest_cleansing_rules()
+    engine.suggest_cleansing_rules()   
+    rules = engine._rules                     
     assert len(rules) > 0
 
 def test_write_parquet(tmp_path, large_dirty_df, engine):
