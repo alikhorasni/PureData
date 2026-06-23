@@ -1,24 +1,31 @@
 """Library-specific exception hierarchy."""
 
-class PureDataError(Exception):
-    """Base exception for PureData."""
 
-class SchemaValidationError(PureDataError):
+class TurboCleanError(Exception):
+    """Base exception for TurboClean."""
+
+
+class SchemaValidationError(TurboCleanError):
     """Raised when a schema constraint is violated."""
+
     def __init__(self, message: str, column: str | None = None) -> None:
         self.column = column
         super().__init__(message)
 
+
 class MissingColumnError(SchemaValidationError):
     """Requested column does not exist."""
+
     def __init__(self, column: str, available: list[str]) -> None:
         super().__init__(
             f"Column '{column}' not found. Available: {', '.join(available)}",
             column=column,
         )
 
-class EmptyDatasetError(PureDataError):
+
+class EmptyDatasetError(TurboCleanError):
     """Input dataset is completely empty."""
 
-class StrategyNotFoundError(PureDataError):
+
+class StrategyNotFoundError(TurboCleanError):
     """No appropriate strategy found for the given format/column."""
