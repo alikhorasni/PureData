@@ -1,16 +1,15 @@
 from __future__ import annotations
 import functools
+import logging
 import time
 import tracemalloc
-import logging
-from typing import Callable, Any
+from collections.abc import Callable
+from typing import Any
 
 logger = logging.getLogger("puredata.benchmark")
 
-
 def benchmark(func: Callable[..., Any]) -> Callable[..., Any]:
     """Decorator that logs execution time and peak memory usage."""
-
     @functools.wraps(func)
     def wrapper(*args: Any, **kwargs: Any) -> Any:
         tracemalloc.start()
@@ -26,5 +25,4 @@ def benchmark(func: Callable[..., Any]) -> Callable[..., Any]:
                 f"peak memory {peak / 1024**2:.2f} MiB"
             )
         return result
-
     return wrapper
