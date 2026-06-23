@@ -1,6 +1,9 @@
 from __future__ import annotations
+
 from typing import Any
+
 import polars as pl
+
 from .contracts import CleanseRule
 
 class MissingCleaner(CleanseRule):
@@ -75,7 +78,6 @@ class DriftCorrector(CleanseRule):
         self.parameters = {"column": column}
 
     def apply(self, lf: pl.LazyFrame) -> pl.LazyFrame:
-        # Adaptive winsorization using dynamic 5th and 95th percentiles
         q_low = lf.select(pl.col(self.column).quantile(0.05)).collect().item()
         q_high = lf.select(pl.col(self.column).quantile(0.95)).collect().item()
         return lf.with_columns(
@@ -112,7 +114,6 @@ class Normalizer(CleanseRule):
             raise ValueError(f"Unknown normalization method: {self.method}")
 
 class CategoryCleaner(CleanseRule):
-    """Standardise categorical values: case folding, whitespace trimming, rare category collapsing."""
     name = "category_cleaner"
 
     def __init__(self, column: str, max_categories: int = 50, rare_threshold: float = 0.01) -> None:
@@ -145,7 +146,6 @@ class CategoryCleaner(CleanseRule):
         return lf
 
 class DateFormatter(CleanseRule):
-    """Auto-detect and unify date formats."""
     name = "date_formatter"
 
     def __init__(self, column: str, target_format: str = "%Y-%m-%d") -> None:
@@ -162,7 +162,6 @@ class DateFormatter(CleanseRule):
         )
 
 class Deduplicator(CleanseRule):
-    """Remove duplicate rows based on one or more columns."""
     name = "deduplicator"
 
     def __init__(self, subset: list[str] | None = None) -> None:
@@ -174,7 +173,6 @@ class Deduplicator(CleanseRule):
         return lf.unique(subset=self.subset)
 
 class TextNormalizer(CleanseRule):
-    """Apply common text normalisations: lowercase, trim, remove extra spaces."""
     name = "text_normalizer"
 
     def __init__(self, column: str, lower: bool = True, trim: bool = True) -> None:
@@ -192,7 +190,6 @@ class TextNormalizer(CleanseRule):
         return lf.with_columns(expr.alias(self.column))
 
 class TypeCaster(CleanseRule):
-    """Cast column to a specified Arrow type."""
     name = "type_caster"
 
     def __init__(self, column: str, target_type: Any) -> None:
