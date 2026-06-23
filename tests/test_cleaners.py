@@ -1,6 +1,7 @@
 import polars as pl
 
-from pure_data.cleaners import Deduplicator, MissingCleaner, OutlierCleaner
+from turboclean.cleaners import Deduplicator, MissingCleaner, OutlierCleaner
+
 
 def test_missing_drop():
     lf = pl.LazyFrame({"a": [1, None, 3]})
