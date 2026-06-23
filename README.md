@@ -31,7 +31,6 @@ Data engineering teams spend **60–80% of their time** cleaning and preparing d
 | **Air‑Gapped Compatibility** | Zero internet dependencies. Deploy seamlessly in secure, isolated environments (financial services, defense, healthcare). |
 | **Zero‑Copy Architecture** | Convert between CSV, JSON, Parquet, Avro, and SQL without memory duplication. Reduce memory footprint by up to **40%**. |
 | **Intelligent Profiling** | Automatically detects distribution drift, date formats, free‑text vs categorical, and recommends column‑specific cleaning strategies. No manual tuning required. |
-| **Enterprise Security** | Built‑in path‑traversal protection. Malicious output paths (`../../etc/passwd`) are detected and blocked with a clear error. |
 | **Production‑Ready** | Built for CI/CD pipelines. Integrates with Airflow, Prefect, and Dagster out of the box. |
 
 ---
