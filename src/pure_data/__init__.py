@@ -1,5 +1,5 @@
 """
-PureData: Ultra-fast, adaptive data cleansing engine.
+TurboClean: Ultra-fast, adaptive data cleansing engine.
 """
 
 from .cleaners import (
