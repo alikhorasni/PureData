@@ -55,7 +55,7 @@ class DynamicProfiler:
         for col in columns:
             dtype = schema.field(col).type
             aggs.append(pl.col(col).null_count().alias(f"__nullcnt_{col}"))
-            if pa.types.is_numeric(dtype):
+            if pa.types.is_integer(dtype) or pa.types.is_floating(dtype):
                 aggs.extend([
                     pl.col(col).mean().alias(f"__mean_{col}"),
                     pl.col(col).std().alias(f"__std_{col}"),
@@ -78,7 +78,7 @@ class DynamicProfiler:
             drift_score = drift_scores.get(col)
             suggested_rules: list[CleanseRule] = []
 
-            if pa.types.is_numeric(dtype):
+            if pa.types.is_integer(dtype) or pa.types.is_floating(dtype):
                 basic_stats = {
                     "mean": stats_dict.get(f"__mean_{col}"),
                     "std": stats_dict.get(f"__std_{col}"),
@@ -121,7 +121,11 @@ class DynamicProfiler:
             return {col: None for col in columns}
 
         half = n_rows // 2
-        numeric_cols = [col for col in columns if pa.types.is_numeric(schema.field(col).type)]
+        numeric_cols = [
+            col for col in columns
+            if pa.types.is_integer(schema.field(col).type)
+            or pa.types.is_floating(schema.field(col).type)
+        ]
         if not numeric_cols:
             return {col: None for col in columns}
 
