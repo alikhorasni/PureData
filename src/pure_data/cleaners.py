@@ -1,8 +1,7 @@
 from __future__ import annotations
-from typing import Any, Dict, Optional
+from typing import Any
 import polars as pl
 from .contracts import CleanseRule
-
 
 class MissingCleaner(CleanseRule):
     name = "missing_cleaner"
@@ -10,7 +9,7 @@ class MissingCleaner(CleanseRule):
     def __init__(self, column: str, strategy: str = "drop") -> None:
         self.column = column
         self.strategy = strategy
-        self.parameters: Dict[str, Any] = {"column": column, "strategy": strategy}
+        self.parameters: dict[str, Any] = {"column": column, "strategy": strategy}
 
     def apply(self, lf: pl.LazyFrame) -> pl.LazyFrame:
         if self.strategy == "drop":
@@ -30,7 +29,6 @@ class MissingCleaner(CleanseRule):
             return lf.with_columns(pl.col(self.column).backward_fill())
         else:
             raise ValueError(f"Unknown missing strategy: {self.strategy}")
-
 
 class OutlierCleaner(CleanseRule):
     name = "outlier_cleaner"
@@ -69,7 +67,6 @@ class OutlierCleaner(CleanseRule):
         else:
             raise ValueError(f"Unknown outlier method: {self.method}")
 
-
 class DriftCorrector(CleanseRule):
     name = "drift_corrector"
 
@@ -90,7 +87,6 @@ class DriftCorrector(CleanseRule):
             .alias(self.column)
         )
 
-
 class Normalizer(CleanseRule):
     name = "normalizer"
 
@@ -110,22 +106,16 @@ class Normalizer(CleanseRule):
             min_val = lf.select(pl.col(self.column).min()).collect().item()
             max_val = lf.select(pl.col(self.column).max()).collect().item()
             return lf.with_columns(
-                ((pl.col(self.column) - min_val) / (max_val - min_val)).alias(
-                    self.column
-                )
+                ((pl.col(self.column) - min_val) / (max_val - min_val)).alias(self.column)
             )
         else:
             raise ValueError(f"Unknown normalization method: {self.method}")
 
-
 class CategoryCleaner(CleanseRule):
     """Standardise categorical values: case folding, whitespace trimming, rare category collapsing."""
-
     name = "category_cleaner"
 
-    def __init__(
-        self, column: str, max_categories: int = 50, rare_threshold: float = 0.01
-    ) -> None:
+    def __init__(self, column: str, max_categories: int = 50, rare_threshold: float = 0.01) -> None:
         self.column = column
         self.max_categories = max_categories
         self.rare_threshold = rare_threshold
@@ -136,11 +126,9 @@ class CategoryCleaner(CleanseRule):
         }
 
     def apply(self, lf: pl.LazyFrame) -> pl.LazyFrame:
-        # Clean whitespace and case
         lf = lf.with_columns(
             pl.col(self.column).str.strip().str.to_lowercase().alias(self.column)
         )
-        # Collapse rare categories into 'other'
         freq = lf.group_by(self.column).agg(pl.len().alias("__cnt")).collect()
         total = freq["__cnt"].sum()
         freq = freq.with_columns((pl.col("__cnt") / total).alias("__freq"))
@@ -156,10 +144,8 @@ class CategoryCleaner(CleanseRule):
             )
         return lf
 
-
 class DateFormatter(CleanseRule):
     """Auto-detect and unify date formats."""
-
     name = "date_formatter"
 
     def __init__(self, column: str, target_format: str = "%Y-%m-%d") -> None:
@@ -168,7 +154,6 @@ class DateFormatter(CleanseRule):
         self.parameters = {"column": column, "target_format": target_format}
 
     def apply(self, lf: pl.LazyFrame) -> pl.LazyFrame:
-        # Attempt to parse string to date, then reformat
         return lf.with_columns(
             pl.col(self.column)
             .str.strptime(pl.Date, strict=False)
@@ -176,13 +161,11 @@ class DateFormatter(CleanseRule):
             .alias(self.column)
         )
 
-
 class Deduplicator(CleanseRule):
     """Remove duplicate rows based on one or more columns."""
-
     name = "deduplicator"
 
-    def __init__(self, subset: Optional[list[str]] = None) -> None:
+    def __init__(self, subset: list[str] | None = None) -> None:
         self.column = "__all__"
         self.subset = subset
         self.parameters = {"subset": subset}
@@ -190,10 +173,8 @@ class Deduplicator(CleanseRule):
     def apply(self, lf: pl.LazyFrame) -> pl.LazyFrame:
         return lf.unique(subset=self.subset)
 
-
 class TextNormalizer(CleanseRule):
     """Apply common text normalisations: lowercase, trim, remove extra spaces."""
-
     name = "text_normalizer"
 
     def __init__(self, column: str, lower: bool = True, trim: bool = True) -> None:
@@ -210,10 +191,8 @@ class TextNormalizer(CleanseRule):
             expr = expr.str.to_lowercase()
         return lf.with_columns(expr.alias(self.column))
 
-
 class TypeCaster(CleanseRule):
     """Cast column to a specified Arrow type."""
-
     name = "type_caster"
 
     def __init__(self, column: str, target_type: Any) -> None:
