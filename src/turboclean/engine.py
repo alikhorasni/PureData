@@ -98,19 +98,11 @@ class DataPurityEngine:
             raise RuntimeError("No data loaded. Call load() first.")
         return self._lf.collect()
 
-    def write(self, destination: str | Path, format: FileFormat|None = None) -> None:
+    def write(self, destination: str | Path, format: Optional[FileFormat] = None) -> None:
         df = self._lf.collect() if self._lf is not None else pl.DataFrame()
-        dest = Path(destination).resolve()                
-        cwd = Path.cwd().resolve()
-        try:
-            dest.relative_to(cwd)
-        except ValueError:
-            raise ValueError(
-                f"Output path '{destination}' is outside the current working directory "
-                f"({cwd}). For security reasons, writing to external paths is not allowed."
-            )
-
+        dest = Path(destination).resolve()
         dest.parent.mkdir(parents=True, exist_ok=True)
+
         if format is None:
             ext = dest.suffix.lower()
             format = {
@@ -119,7 +111,7 @@ class DataPurityEngine:
                 ".json": FileFormat.JSON,
                 ".ndjson": FileFormat.JSON,
                 ".parquet": FileFormat.PARQUET,
-            }.get(ext)
+                }.get(ext)
             if format is None:
                 raise ValueError(
                     f"Cannot infer output format from extension '{ext}'. "
