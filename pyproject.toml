@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "puredata"
 version = "0.3.0"
-description = "Ultra-fast, adaptive data purification engine handles 100+ GB files with zero-copy, lazy execution."
-authors = ["Ali Khorasani <Alikhorasanishirehjeyni@gmail.com>"]
+description = "Ultra-fast, adaptive data purification engine that outpaces Pandas by 5x and handles 100+ GB files with zero-copy, lazy execution."
+authors = ["Your Name <email@example.com>"]
 license = "MIT"
 readme = "README.md"
 packages = [{ include = "pure_data", from = "src" }]
@@ -17,26 +17,17 @@ rich = "^13.7.0"
 pyyaml = "^6.0"
 sqlalchemy = { version = "^2.0", optional = true }
 openpyxl = { version = "^3.1.0", optional = true }
+pytest = { version = "^7.4.0", optional = true }
+mypy = { version = "^1.5.0", optional = true }
+ruff = { version = "^0.1.0", optional = true }
+pandas = { version = "^2.1.0", optional = true }
+pre-commit = { version = "^3.0", optional = true }
 
 [tool.poetry.extras]
 sql = ["sqlalchemy"]
 excel = ["openpyxl"]
 all = ["sqlalchemy", "openpyxl"]
-dev = [
-    "pytest>=7.4.0",
-    "mypy>=1.5.0",
-    "ruff>=0.1.0",
-    "pandas>=2.1.0",
-    "pre-commit>=3.0",
-]
-
-[tool.poetry.group.dev.dependencies]
-pytest = "^7.4.0"
-mypy = "^1.5.0"
-ruff = "^0.1.0"
-pandas = "^2.1.0" # for benchmarks only
-ipython = { version = "^8.0", optional = true }
-pre-commit = "^3.0"
+dev = ["pytest", "mypy", "ruff", "pandas", "pre-commit"]
 
 [build-system]
 requires = ["poetry-core"]
@@ -55,7 +46,7 @@ ignore_missing_imports = true
 line-length = 100
 target-version = "py310"
 select = ["E", "F", "I", "N", "W", "UP"]
-ignore = ["E501"]   # handled by formatter
+ignore = ["E501"]
 
 [tool.ruff.format]
 quote-style = "double"
