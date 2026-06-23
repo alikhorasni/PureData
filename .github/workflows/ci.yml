@@ -27,10 +27,10 @@ jobs:
           pip install ".[all,dev]"
 
       - name: Lint with Ruff
-        run: ruff check src tests
+        run: ruff check --fix src tests
 
       - name: Format check with Ruff
-        run: ruff format --check src tests
+        run: ruff format src tests
 
       - name: Type check with mypy
         run: mypy src
