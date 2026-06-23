@@ -1,6 +1,8 @@
 from pathlib import Path
+
 import polars as pl
 import pytest
+
 from pure_data.io_adapter import IOAdapter
 
 class TestReadLazyFrame:
