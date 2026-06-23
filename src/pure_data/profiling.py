@@ -1,8 +1,11 @@
 from __future__ import annotations
+
 from dataclasses import dataclass, field
 from typing import Any
+
 import polars as pl
 import pyarrow as pa
+
 from .contracts import CleanseRule, ColumnProfile, DataProfile
 from .utils import benchmark
 
