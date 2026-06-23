@@ -11,6 +11,7 @@ from .exceptions import EmptyDatasetError
 from .io_adapter import IOAdapter
 from .utils import benchmark
 
+
 class DataPurityEngine:
     """Core engine for intelligent data screening, cleaning, and quality improvement."""
 
@@ -29,9 +30,9 @@ class DataPurityEngine:
         **kwargs: Any,
     ) -> DataPurityEngine:
         if not lazy:
-            raise ValueError("PureData core only supports lazy=True")
+            raise ValueError("TurboClean core only supports lazy=True")
         self._lf = IOAdapter.read_lazyframe(source, format, **kwargs)
-        if not self._lf.columns:
+        if not self._lf.collect_schema().names():
             raise EmptyDatasetError("The dataset has no columns.")
         return self
 
@@ -39,7 +40,7 @@ class DataPurityEngine:
     def infer_schema(self, sample_size: int = 10_000) -> pa.Schema:
         if self._lf is None:
             raise RuntimeError("No data loaded. Call load() first.")
-        sample = self._lf.fetch(sample_size)
+        sample = self._lf.limit(sample_size).collect()
         self._schema = sample.to_arrow().schema
         return self._schema
 
@@ -48,6 +49,7 @@ class DataPurityEngine:
         if self._lf is None:
             raise RuntimeError("No data loaded. Call load() first.")
         from .profiling import DynamicProfiler
+
         profiler = DynamicProfiler(self._lf)
         self._profile = profiler.generate_profile()
         rules: list[CleanseRule] = []
@@ -57,7 +59,9 @@ class DataPurityEngine:
         return rules
 
     @benchmark
-    def apply_profile(self, profile: DataProfile, in_place: bool = False) -> DataPurityEngine:
+    def apply_profile(
+        self, profile: DataProfile, in_place: bool = False
+    ) -> DataPurityEngine:
         self._profile = profile
         return self
 
@@ -82,9 +86,34 @@ class DataPurityEngine:
             raise RuntimeError("No data loaded. Call load() first.")
         return self._lf.collect()
 
-    def write(self, destination: str | Path, format: FileFormat) -> None:
+    def write(
+        self, destination: str | Path, format: FileFormat | None = None
+    ) -> None:
+        """
+        Write the cleaned data to the given destination.
+
+        If `format` is not provided, it will be inferred from the file extension.
+        Supported formats: CSV (.csv), Parquet (.parquet), JSON (.json / .ndjson).
+        """
         df = self._lf.collect() if self._lf is not None else pl.DataFrame()
         dest = Path(destination)
+
+        if format is None:
+            # Auto‑detect from extension (same mapping as IOAdapter)
+            ext = dest.suffix.lower()
+            format = {
+                ".csv": FileFormat.CSV,
+                ".tsv": FileFormat.CSV,
+                ".json": FileFormat.JSON,
+                ".ndjson": FileFormat.JSON,
+                ".parquet": FileFormat.PARQUET,
+            }.get(ext)
+            if format is None:
+                raise ValueError(
+                    f"Cannot infer output format from extension '{ext}'. "
+                    f"Please specify `format` explicitly."
+                )
+
         if format == FileFormat.PARQUET:
             df.write_parquet(dest)
         elif format == FileFormat.CSV:
