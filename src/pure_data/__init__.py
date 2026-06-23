@@ -1,21 +1,21 @@
 """
-PureData: Ultra-fast, adaptive data purification engine.
+PureData: Ultra-fast, adaptive data cleansing engine.
 """
 
-from .engine import DataPurityEngine
-from .contracts import FileFormat, CleanseRule, DataProfile, ColumnProfile
-from .profiling import DynamicProfiler
 from .cleaners import (
-    MissingCleaner,
-    OutlierCleaner,
-    DriftCorrector,
-    Normalizer,
     CategoryCleaner,
     DateFormatter,
     Deduplicator,
+    DriftCorrector,
+    MissingCleaner,
+    Normalizer,
+    OutlierCleaner,
     TextNormalizer,
     TypeCaster,
 )
+from .contracts import CleanseRule, ColumnProfile, DataProfile, FileFormat
+from .engine import DataPurityEngine
+from .profiling import DynamicProfiler
 from .reporting import ReportGenerator
 from .rule_factory import rule_factory
 
