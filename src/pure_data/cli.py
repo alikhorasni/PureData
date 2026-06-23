@@ -1,15 +1,13 @@
-"""
-PureData CLI – A beautiful, intuitive command-line interface.
-Powered by Click and Rich.
-"""
-
 from __future__ import annotations
+
 from pathlib import Path
+
 import click
 import yaml
 from rich.console import Console
 from rich.progress import Progress, SpinnerColumn, TextColumn
 from rich.table import Table
+
 from .cleaners import MissingCleaner, Normalizer, OutlierCleaner
 from .contracts import FileFormat
 from .engine import DataPurityEngine
