@@ -1,8 +1,11 @@
 from __future__ import annotations
+
 from pathlib import Path
 from typing import Any, TypeVar
-import pyarrow as pa
+
 import polars as pl
+import pyarrow as pa
+
 from .contracts import CleanseRule, Connector, DataProfile, FileFormat
 from .exceptions import EmptyDatasetError
 from .io_adapter import IOAdapter
