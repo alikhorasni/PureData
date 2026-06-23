@@ -32,7 +32,7 @@ class DataPurityEngine:
         if not lazy:
             raise ValueError("TurboClean core only supports lazy=True")
         self._lf = IOAdapter.read_lazyframe(source, format, **kwargs)
-        if not self._lf.collect_schema().names():
+        if not self._lf.columns:
             raise EmptyDatasetError("The dataset has no columns.")
         return self
 
@@ -86,20 +86,11 @@ class DataPurityEngine:
             raise RuntimeError("No data loaded. Call load() first.")
         return self._lf.collect()
 
-    def write(
-        self, destination: str | Path, format: FileFormat | None = None
-    ) -> None:
-        """
-        Write the cleaned data to the given destination.
-
-        If `format` is not provided, it will be inferred from the file extension.
-        Supported formats: CSV (.csv), Parquet (.parquet), JSON (.json / .ndjson).
-        """
+    def write(self, destination: str | Path, format: Optional[FileFormat] = None) -> None:
         df = self._lf.collect() if self._lf is not None else pl.DataFrame()
         dest = Path(destination)
 
         if format is None:
-            # Auto‑detect from extension (same mapping as IOAdapter)
             ext = dest.suffix.lower()
             format = {
                 ".csv": FileFormat.CSV,
@@ -113,7 +104,7 @@ class DataPurityEngine:
                     f"Cannot infer output format from extension '{ext}'. "
                     f"Please specify `format` explicitly."
                 )
-
+    
         if format == FileFormat.PARQUET:
             df.write_parquet(dest)
         elif format == FileFormat.CSV:
