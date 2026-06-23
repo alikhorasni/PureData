@@ -1,6 +1,6 @@
 ---
 name: Feature Request
-about: Suggest an idea for PureData
+about: Suggest an idea for TurboClean
 title: "[FEATURE] "
 labels: enhancement
 assignees: ""
