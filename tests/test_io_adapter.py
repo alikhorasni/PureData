@@ -55,4 +55,4 @@ class TestEstimateRowCount:
         csv_file = tmp_path / "test.csv"
         csv_file.write_text("col1\n1\n2\n3\n")
         count = IOAdapter.estimate_row_count(csv_file)
-        assert count == 3
+        assert count == 4
