@@ -152,7 +152,6 @@ See [`CONTRIBUTING.md`](CONTRIBUTING.md) for detailed plugin development guideli
 
 - **GitHub Issues:** [Report a bug or request a feature](https://github.com/AliKhorasni/TurboClean/issues)
 - **Telegram Channel:** [@TheBraine](https://t.me/TheBraine) – News, tips, and direct chat with the maintainer.
-- **Enterprise Support:** Reach out at `support@turboclean.io` for SLA‑backed support and custom feature development.
 
 ---
 
