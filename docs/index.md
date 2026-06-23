@@ -1,8 +1,8 @@
-# PureData Documentation
+# TurboClean Documentation
 
 **Ultra‑fast, adaptive data cleansing at scale.**
 
-PureData is a Python library that profiles, validates, and cleans massive datasets without loading them entirely into memory. It uses lazy evaluation via Polars and zero‑copy data sharing through Apache Arrow, making it 5 × faster than Pandas on files up to hundreds of gigabytes.
+TurboClean is a Python library that profiles, validates, and cleans massive datasets without loading them entirely into memory. It uses lazy evaluation via Polars and zero‑copy data sharing through Apache Arrow, making it 5 × faster than Pandas on files up to hundreds of gigabytes.
 
 ## Key Features
 
