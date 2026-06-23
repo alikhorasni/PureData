@@ -3,7 +3,8 @@ from pathlib import Path
 import polars as pl
 import pytest
 
-from pure_data.io_adapter import IOAdapter
+from turboclean.io_adapter import IOAdapter
+
 
 class TestReadLazyFrame:
     def test_read_csv(self, tmp_path: Path) -> None:
