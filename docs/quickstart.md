@@ -1,18 +1,18 @@
 # Quickstart
 
-Install PureData:
+Install TurboClean:
 ```bash
-pip install puredata
+pip install turboclean
 ```
 1‑Line Magic
 ```python
-from pure_data import DataPurityEngine
+from turboclean import DataPurityEngine
 DataPurityEngine().load("dirty.csv").suggest_cleansing_rules().clean().write("clean.parquet")
 ```
 CLI
 ```bash
-puredata clean dirty.csv clean.parquet --auto-magic
-puredata profile dirty.csv --report report.md
+turboclean clean dirty.csv clean.parquet --auto-magic
+turboclean profile dirty.csv --report report.md
 ```
 Custom Cleaning Rules (YAML)
 ```yaml
@@ -24,5 +24,5 @@ Custom Cleaning Rules (YAML)
   method: iqr
 ```
 ```bash
-puredata clean dirty.csv clean.parquet --config rules.yaml
+turboclean clean dirty.csv clean.parquet --config rules.yaml
 ```
