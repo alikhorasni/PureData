@@ -122,9 +122,6 @@ class FraudDetector(CleanseRule):
 # Inject into pipeline
 engine.pipe(FraudDetector("transaction_amount", contamination=0.02))
 ```
-
-See [`CONTRIBUTING.md`](CONTRIBUTING.md) for detailed plugin development guidelines.
-
 ---
 
 ## 🏢 Use Cases
