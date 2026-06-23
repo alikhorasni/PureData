@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import enum
-from typing import Any, Protocol, TypeVar
+from typing import Any, Mapping, Protocol, TypeVar, runtime_checkable
 
 import polars
 import pyarrow as pa
@@ -17,6 +17,7 @@ class FileFormat(enum.Enum):
     XML = "xml"
     SQL = "sql"
 
+@runtime_checkable
 class Connector(Protocol):
     """Protocol for SQLAlchemy-compatible database connections."""
     def execute(self, query: str) -> Any: ...
@@ -34,12 +35,13 @@ class CleanseRule(Protocol):
 class DataProfile(Protocol):
     """Full statistical profile of a dataset."""
     schema: pa.Schema
-    column_profiles: dict[str, ColumnProfile]
+    column_profiles: Mapping[str, ColumnProfile]   
 
     def summary(self) -> str: ...
 
 class ColumnProfile(Protocol):
     dtype: pa.DataType
     null_count: int
+    null_ratio: float
     distribution_drift_score: float | None
     suggested_rules: list[CleanseRule]
