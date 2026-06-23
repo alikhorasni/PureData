@@ -48,7 +48,7 @@ class IOAdapter:
             with path.open("rb") as f:
                 mm = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ)
                 try:
-                    return mm[:].count(b"\n")
+                    return cast(int, mm[:].count(b"\n"))
                 finally:
                     mm.close()
         return 0
