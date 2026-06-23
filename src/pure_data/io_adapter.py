@@ -43,7 +43,7 @@ class IOAdapter:
         fmt = fmt or IOAdapter._detect_format(path)
         if fmt == FileFormat.PARQUET:
             with path.open("rb") as f:
-                return pq.ParquetFile(f).metadata.num_rows
+                return int(pq.ParquetFile(f).metadata.num_rows)
         elif fmt == FileFormat.CSV:
             with path.open("rb") as f:
                 mm = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ)
