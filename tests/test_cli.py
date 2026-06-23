@@ -1,4 +1,5 @@
 from click.testing import CliRunner
+
 from pure_data.cli import main
 
 def test_clean_auto_magic(tmp_path):
