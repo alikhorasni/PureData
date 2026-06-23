@@ -1,8 +1,10 @@
 from __future__ import annotations
+
 import enum
 from typing import Any, Protocol, TypeVar
-import pyarrow as pa
+
 import polars
+import pyarrow as pa
 
 T = TypeVar("T", covariant=True)
 
