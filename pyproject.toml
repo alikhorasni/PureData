@@ -2,7 +2,7 @@
 name = "puredata"
 version = "0.3.0"
 description = "Ultra-fast, adaptive data purification engine that handle with zero-copy, lazy execution."
-authors = ["Your Name <alikhorasanishirehjeyni@gmail.com>"]
+authors = ["Ali Khorasani <alikhorasanishirehjeyni@gmail.com>"]
 license = "MIT"
 readme = "README.md"
 packages = [{ include = "pure_data", from = "src" }]
