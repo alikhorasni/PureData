@@ -131,7 +131,7 @@ class CategoryCleaner(CleanseRule):
         lf = lf.with_columns(
             pl.col(self.column).str.strip().str.to_lowercase().alias(self.column)
         )
-        freq = lf.group_by(self.column).agg(pl.len().alias("__cnt")).collect()  # type: ignore[attr-defined]
+        freq = lf.group_by(self.column).agg(pl.len().alias("__cnt")).collect()  
         total = freq["__cnt"].sum()
         freq = freq.with_columns((pl.col("__cnt") / total).alias("__freq"))
         rare_vals = set(
