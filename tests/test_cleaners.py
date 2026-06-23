@@ -1,4 +1,5 @@
 import polars as pl
+
 from pure_data.cleaners import Deduplicator, MissingCleaner, OutlierCleaner
 
 def test_missing_drop():
