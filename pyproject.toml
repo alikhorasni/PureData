@@ -1,17 +1,17 @@
 [tool.poetry]
-name = "puredata"
+name = "turboclean"
 version = "0.3.0"
 description = "Ultra-fast, adaptive data purification engine that handle with zero-copy, lazy execution."
 authors = ["Ali Khorasani <alikhorasanishirehjeyni@gmail.com>"]
 license = "MIT"
 readme = "README.md"
-packages = [{ include = "pure_data", from = "src" }]
+packages = [{ include = "turboclean", from = "src" }]
 include = ["README.md", "LICENSE", "benchmarks/"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-polars = "^0.19.0"
-pyarrow = "^14.0.0"
+polars = ">=0.19.0,<1.0"
+pyarrow = ">=14.0.0" 
 click = "^8.1.0"
 rich = "^13.7.0"
 pyyaml = "^6.0"
