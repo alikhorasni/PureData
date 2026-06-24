@@ -11,7 +11,7 @@ from rich.table import Table
 
 from . import __version__
 from .cleaners import MissingCleaner, Normalizer, OutlierCleaner
-from .contracts import FileFormat
+from .contracts import CleanseRule, FileFormat
 from .engine import DataPurityEngine
 from .reporting import ReportGenerator
 from .rule_factory import rule_factory
@@ -55,7 +55,7 @@ def _resolve_columns(
     return requested
 
 
-def _print_rules(rules: list, verbose: bool = False) -> None:
+def _print_rules(rules: list[CleanseRule], verbose: bool = False) -> None:
     """Display a table of cleaning rules, with details if verbose is True."""
     if not rules:
         if verbose:
@@ -197,7 +197,7 @@ def clean(
         if not quiet:
             console.print("[green]done.[/green]")
 
-        rules = []
+        rules: list[CleanseRule] = []
         if config:
             with open(config) as f:
                 cfg = yaml.safe_load(f)
@@ -285,7 +285,7 @@ def profile(
         engine = DataPurityEngine()
         if not quiet:
             console.print("[bold]Loading data…[/bold]", end=" ")
-        engine.load(input)  # limit not yet supported directly, but could be added
+        engine.load(input)  # limit not yet supported directly
         if not quiet:
             console.print("[green]done.[/green]")
 
