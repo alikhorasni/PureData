@@ -3,7 +3,8 @@ from __future__ import annotations
 import re
 from typing import Any
 
-from .compat import pl
+import polars as pl
+
 from .contracts import CleanseRule
 
 
