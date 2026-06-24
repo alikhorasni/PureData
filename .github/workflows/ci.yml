@@ -41,8 +41,23 @@ jobs:
       - name: Type check with mypy
         run: mypy src
 
-      - name: Run tests
+      - name: Run unit tests
         run: pytest tests --cov=turboclean --cov-report=term-missing
+
+      - name: Install extra dependencies for examples
+        run: pip install scikit-learn fsspec openpyxl
+
+      - name: Run example scripts
+        run: |
+          set -e
+          for script in examples/*.py; do
+            if [[ "$script" == *"11_streaming_from_url.py" ]]; then
+              echo "Skipping network-dependent example: $script"
+              continue
+            fi
+            echo "Running $script..."
+            python "$script"
+          done
 
   benchmark-regression:
     runs-on: ubuntu-latest
