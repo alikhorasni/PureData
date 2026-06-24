@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "turboclean"
 version = "0.3.3"
-description = "Ultra-fast, adaptive data purification engine that handle with zero-copy, lazy execution."
+description = "Ultra-fast, adaptive data purification engine that handles 100+ GB files with zero-copy, lazy execution."
 authors = ["Ali Khorasani <alikhorasanishirehjeyni@gmail.com>"]
 license = "MIT"
 readme = "README.md"
@@ -10,22 +10,22 @@ include = ["README.md", "LICENSE", "benchmarks/"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-pyarrow = ">=15.0.0"  
+polars = { version = ">=1.0,<2.0", extras = ["rtcompat"] }
+pyarrow = ">=15.0.0"
 click = "^8.1.0"
 rich = "^13.7.0"
 pyyaml = "^6.0"
-polars = { version = ">=1.0,<2.0", extras = ["rtcompat"] } 
 sqlalchemy = { version = "^2.0", optional = true }
 openpyxl = { version = "^3.1.0", optional = true }
 pytest = { version = "^7.4.0", optional = true }
 numpy = { version = "<2", optional = true }
+mypy = { version = "^1.5.0", optional = true }
 ruff = { version = "^0.1.0", optional = true }
 pandas = { version = "^2.1.0", optional = true }
 pre-commit = { version = "^3.0", optional = true }
 pytest-cov = { version = "^5.0", optional = true }
 
 [tool.poetry.extras]
-gpu = ["polars[gpu]"]  
 sql = ["sqlalchemy"]
 excel = ["openpyxl"]
 all = ["sqlalchemy", "openpyxl"]
